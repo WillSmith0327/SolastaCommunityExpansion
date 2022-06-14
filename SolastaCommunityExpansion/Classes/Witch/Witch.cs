@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using SolastaCommunityExpansion.Api;
 using SolastaCommunityExpansion.Api.Extensions;
 using SolastaCommunityExpansion.Builders;
 using SolastaCommunityExpansion.Builders.Features;
+using SolastaCommunityExpansion.Classes.Witch.Features;
 using SolastaCommunityExpansion.Classes.Witch.Subclasses;
 using SolastaCommunityExpansion.CustomDefinitions;
 using SolastaCommunityExpansion.Level20;
@@ -1051,7 +1052,7 @@ internal static class Witch
 
         void BuildWitchFamiliar()
         {
-            var witchAttackDefinition = MonsterAttackDefinitionBuilder
+/*            var witchAttackDefinition = MonsterAttackDefinitionBuilder
                 .Create(MonsterAttackDefinitions.Attack_EagleMatriarch_Talons, "AttackWitchOwlTalons",
                     WITCH_BASE_GUID).AddToDB();
             var witchFamiliarAttackIteration = new MonsterAttackIteration(witchAttackDefinition, 1);
@@ -1148,7 +1149,7 @@ internal static class Witch
                 .SetCastingClass(witch)
                 .SetAutoTag("Witch")
                 .AddToDB();
-
+*/
             var acConditionDefinition = ConditionDefinitionBuilder
                 .Create(ConditionKindredSpiritBondAC, "ConditionWitchFamiliarAC", WITCH_BASE_GUID)
                 .SetGuiPresentationNoContent()
@@ -1197,7 +1198,7 @@ internal static class Witch
                 .Create(FeatureDefinitionFeatureSets.FeatureSetHumanLanguages, "FeatureSetWitchFamiliar",
                     WITCH_BASE_GUID)
                 .SetGuiPresentation("WitchFamiliarPower", Category.Class)
-                .SetFeatureSet(preparedSpells, summoningAffinity)
+                .SetFeatureSet(WitchFamiliarFeatureSetBuilder.WitchFamiliarFeatureSet, summoningAffinity)
                 .SetMode(FeatureDefinitionFeatureSet.FeatureSetMode.Union)
                 .SetUniqueChoices(true)
                 .AddToDB();
