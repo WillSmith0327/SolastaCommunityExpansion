@@ -15,6 +15,11 @@
     },
     {
       "$type": "FeatureUnlockByLevel, Assembly-CSharp",
+      "featureDefinition": "Definition:LightAffinityDarkelfLightSensitivity:707231ea-e34d-4e26-9af8-4e52c0cb85c3",
+      "level": 1
+    },
+    {
+      "$type": "FeatureUnlockByLevel, Assembly-CSharp",
       "featureDefinition": "Definition:DarkelfMagic:0271c652-b4aa-4346-806d-9711e634271b",
       "level": 1
     },
@@ -31,11 +36,6 @@
     {
       "$type": "FeatureUnlockByLevel, Assembly-CSharp",
       "featureDefinition": "Definition:MoveModeMove6:6f358015fcdb8e147a7cfef7e2506430",
-      "level": 1
-    },
-    {
-      "$type": "FeatureUnlockByLevel, Assembly-CSharp",
-      "featureDefinition": "Definition:LightAffinityDarkelfLightSensitivity:707231ea-e34d-4e26-9af8-4e52c0cb85c3",
       "level": 1
     },
     {
@@ -233,7 +233,7 @@
   },
   "guiPresentation": {
     "$type": "GuiPresentation, Assembly-CSharp",
-    "hidden": true,
+    "hidden": false,
     "title": "Race/&DarkelfRaceTitle",
     "description": "Race/&DarkelfRaceDescription",
     "spriteReference": {
