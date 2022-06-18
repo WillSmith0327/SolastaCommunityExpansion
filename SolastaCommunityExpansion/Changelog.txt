@@ -11,5 +11,4 @@
 
 CHANGES:
 
-- Add Half-Elf variant subclasses
-- Change Dark-Elf bright sensitivity detrimental condition
+- Improve Russian translations [Prioritizer]
