@@ -20,6 +20,7 @@ public class EffectFormBuilder
     public EffectFormBuilder(EffectForm reference)
     {
         effectForm = new EffectForm();
+
         effectForm.Copy(reference);
     }
 

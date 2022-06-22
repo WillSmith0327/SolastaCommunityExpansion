@@ -3,12 +3,9 @@
 - Thanks to all individuals who contributed so far...
 - We could do much more if everyone donates $1-$5
 
-** Pay for better services from DeepL, GitHub and others
-** Hire freelancer artists for better animations, bitmaps, etc
-
 - The [donation] button is under Mod UI > Credits
 - It opens a browser page with a paypal support link
 
 CHANGES:
 
-- Improve Russian translations [Prioritizer]
+- Fix Dark-Half elf not getting powers at 3 and 5
