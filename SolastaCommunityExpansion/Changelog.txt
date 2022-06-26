@@ -8,4 +8,4 @@
 
 CHANGES:
 
-- Fix Dark-Half elf not getting powers at 3 and 5
+- Fix MP desync with preferred cantrips
