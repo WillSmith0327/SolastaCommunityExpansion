@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using ModKit.Utility;
 using SolastaCommunityExpansion.Models;
 using UnityModManagerNet;
 
 namespace SolastaCommunityExpansion.Utils;
 
-public class Core
+public sealed class Core
 {
 }
 
@@ -21,6 +20,7 @@ public class Settings : UnityModManager.ModSettings
 
     public bool DisplayWelcomeMessage { get; set; } = true;
     public bool EnableBetaContent { get; set; }
+    public int EnableDiagsDump { get; set; }
 
     //
     // Blueprints Viewer UI
@@ -109,6 +109,7 @@ public class Settings : UnityModManager.ModSettings
     public bool EnableShortRestRechargeOfArcaneWeaponOnWizardArcaneFighter { get; set; }
     public int OverrideRogueConArtistImprovedManipulationSpellDc { get; set; } = 3;
     public int OverrideWizardMasterManipulatorArcaneManipulationSpellDc { get; set; } = 2;
+    public bool ReduceDarkelfLightPenalty { get; set; }
     public int RaceSliderPosition { get; set; } = 4;
     public List<string> RaceEnabled { get; } = new();
     public int ClassSliderPosition { get; set; } = 4;
@@ -216,7 +217,7 @@ public class Settings : UnityModManager.ModSettings
     public bool EnableCheatMenu { get; set; }
     public bool OverrideMinMaxLevel { get; set; }
     public bool EnableTogglesToOverwriteDefaultTestParty { get; set; }
-    public List<string> DefaultPartyHeroes = new();
+    public List<string> defaultPartyHeroes = new();
     public bool NoExperienceOnLevelUp { get; set; }
     public int OverridePartySize { get; set; } = DungeonMakerContext.GAME_PARTY_SIZE;
     public int MultiplyTheExperienceGainedBy { get; set; } = 100;
@@ -261,6 +262,7 @@ public class Settings : UnityModManager.ModSettings
     public bool FollowCharactersOnTeleport { get; set; }
     public bool EnableAdditionalBackstoryDisplay { get; set; }
     public bool EnableLogDialoguesToConsole { get; set; }
+    public bool EnableStatsOnHeroTooltip { get; set; }
     public bool EnableAdditionalIconsOnLevelMap { get; set; }
     public bool MarkInvisibleTeleportersOnLevelMap { get; set; }
     public bool HideExitAndTeleporterGizmosIfNotDiscovered { get; set; }

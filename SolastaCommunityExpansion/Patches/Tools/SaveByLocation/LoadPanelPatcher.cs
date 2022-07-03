@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using HarmonyLib;
-using ModKit;
+using SolastaCommunityExpansion.Api.Infrastructure;
 using UnityEngine;
 using UnityEngine.UI;
 using static GuiDropdown;
@@ -127,13 +127,13 @@ internal static class LoadPanel_OnBeginShow
             {
                 default:
                     Main.Error($"Unknown LocationType: {locationType}");
-                    return title.red();
+                    return title.Red();
                 case LocationType.StandardCampaign:
                     return title;
                 case LocationType.CustomCampaign:
-                    return title.yellow();
+                    return title.Yellow();
                 case LocationType.UserLocation:
-                    return title.orange();
+                    return title.Orange();
             }
         }
 
@@ -191,25 +191,29 @@ internal static class LoadPanel_OnBeginShow
                     .GetComponentsInChildren<RectTransform>()
                     .SingleOrDefault(c => c.gameObject.name == "ButtonsBar")?.gameObject;
 
-                if (buttonBar != null)
+                if (buttonBar == null)
                 {
-                    var horizontalLayoutGroup = buttonBar.GetComponent<HorizontalLayoutGroup>();
-
-                    if (horizontalLayoutGroup != null)
-                    {
-                        Dropdown.transform.SetParent(horizontalLayoutGroup.transform, false);
-
-                        horizontalLayoutGroup.childForceExpandWidth = true;
-                        horizontalLayoutGroup.childForceExpandHeight = true;
-                        horizontalLayoutGroup.childControlWidth = true;
-                        horizontalLayoutGroup.childControlHeight = true;
-                        horizontalLayoutGroup.childAlignment = TextAnchor.MiddleLeft;
-
-                        var dropDownLayout = dd.gameObject.AddComponent<LayoutElement>();
-                        // any large flexible width will do
-                        dropDownLayout.flexibleWidth = 3;
-                    }
+                    return dd;
                 }
+
+                var horizontalLayoutGroup = buttonBar.GetComponent<HorizontalLayoutGroup>();
+
+                if (horizontalLayoutGroup == null)
+                {
+                    return dd;
+                }
+
+                Dropdown.transform.SetParent(horizontalLayoutGroup.transform, false);
+
+                horizontalLayoutGroup.childForceExpandWidth = true;
+                horizontalLayoutGroup.childForceExpandHeight = true;
+                horizontalLayoutGroup.childControlWidth = true;
+                horizontalLayoutGroup.childControlHeight = true;
+                horizontalLayoutGroup.childAlignment = TextAnchor.MiddleLeft;
+
+                var dropDownLayout = dd.gameObject.AddComponent<LayoutElement>();
+                // any large flexible width will do
+                dropDownLayout.flexibleWidth = 3;
             }
             else
             {

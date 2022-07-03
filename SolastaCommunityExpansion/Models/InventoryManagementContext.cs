@@ -87,7 +87,8 @@ internal static class InventoryManagementContext
         reorderButton.onClick.RemoveAllListeners();
         reorderButton.onClick.AddListener(delegate
         {
-            if (Main.Settings.EnableInventoryFilteringAndSorting)
+            if (Main.Settings.EnableInventoryFilteringAndSorting
+                && !Global.IsMultiplayer)
             {
                 ResetControls();
                 SelectionChanged();
@@ -160,18 +161,20 @@ internal static class InventoryManagementContext
 
     internal static void ResetControls()
     {
-        if (BySortGroup != null) // required to avoid a null exception during game load
+        if (BySortGroup == null)
         {
-            FilterGuiDropdown.value = 0;
-            SortGuiDropdown.value = 0;
-            BySortGroup.Inverted = false;
-            BySortGroup.Refresh();
+            return;
         }
+
+        FilterGuiDropdown.value = 0;
+        SortGuiDropdown.value = 0;
+        BySortGroup.Inverted = false;
+        BySortGroup.Refresh();
     }
 
     internal static void RefreshControlsVisibility()
     {
-        var active = Main.Settings.EnableInventoryFilteringAndSorting;
+        var active = Main.Settings.EnableInventoryFilteringAndSorting && !Global.IsMultiplayer;
 
         FilterGuiDropdown.gameObject.SetActive(active);
         BySortGroup.gameObject.SetActive(active);
@@ -305,10 +308,12 @@ internal static class InventoryManagementContext
 
     internal static void Flush(RulesetContainer container)
     {
-        if (container != null)
+        if (container == null)
         {
-            FilteredItems.ForEach(item => container.AddSubItem(item, true));
-            FilteredItems.Clear();
+            return;
         }
+
+        FilteredItems.ForEach(item => container.AddSubItem(item, true));
+        FilteredItems.Clear();
     }
 }

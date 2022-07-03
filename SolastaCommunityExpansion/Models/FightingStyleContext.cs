@@ -13,7 +13,6 @@ internal static class FightingStyleContext
 
     internal static void Load()
     {
-        LoadStyle(new BlindFighting());
         LoadStyle(new Crippling());
         LoadStyle(new Pugilist());
         LoadStyle(new TitanFighting());

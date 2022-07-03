@@ -9,11 +9,6 @@ internal static class LevelDownContext
 {
     public static bool IsLevelDown { get; set; }
 
-    internal static void Load()
-    {
-        ServiceRepository.GetService<IFunctorService>().RegisterFunctor("LevelDown", new FunctorLevelDown());
-    }
-
     internal static void ConfirmAndExecute(string filename)
     {
         var service = ServiceRepository.GetService<ICharacterPoolService>();
@@ -30,13 +25,15 @@ internal static class LevelDownContext
     private static void RemoveFeaturesByTag(RulesetCharacterHero hero, CharacterClassDefinition classDefinition,
         string tag)
     {
-        if (hero.ActiveFeatures.ContainsKey(tag))
+        if (!hero.ActiveFeatures.ContainsKey(tag))
         {
-            CustomFeaturesContext.RecursiveRemoveCustomFeatures(hero, tag, hero.ActiveFeatures[tag]);
-            CustomFeaturesContext.RemoveFeatures(hero, classDefinition, tag, hero.ActiveFeatures[tag]);
-
-            hero.ActiveFeatures.Remove(tag);
+            return;
         }
+
+        CustomFeaturesContext.RecursiveRemoveCustomFeatures(hero, tag, hero.ActiveFeatures[tag]);
+        CustomFeaturesContext.RemoveFeatures(hero, classDefinition, tag, hero.ActiveFeatures[tag]);
+
+        hero.ActiveFeatures.Remove(tag);
     }
 
     private static void LevelDown(RulesetCharacterHero hero)
@@ -191,10 +188,13 @@ internal static class LevelDownContext
                 }
 
                 break;
+
+            case RuleDefinitions.SpellKnowledge.FixedList:
+                break;
         }
     }
 
-    private class FunctorLevelDown : Functor
+    internal class FunctorLevelDown : Functor
     {
         public override IEnumerator Execute(
             FunctorParametersDescription functorParameters,
@@ -225,16 +225,18 @@ internal static class LevelDownContext
                 yield return null;
             }
 
-            if (state > 0)
+            if (state <= 0)
             {
-                if (functorParameters.RestingHero.ClassesHistory.Count > 1)
-                {
-                    LevelDown(functorParameters.RestingHero);
-                }
-                else
-                {
-                    yield return new FunctorRespec().Execute(functorParameters, context);
-                }
+                yield break;
+            }
+
+            if (functorParameters.RestingHero.ClassesHistory.Count > 1)
+            {
+                LevelDown(functorParameters.RestingHero);
+            }
+            else
+            {
+                yield return new FunctorRespec().Execute(functorParameters, context);
             }
         }
     }

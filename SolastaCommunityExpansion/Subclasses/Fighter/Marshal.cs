@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using SolastaCommunityExpansion.Api.Extensions;
 using SolastaCommunityExpansion.Builders;
 using SolastaCommunityExpansion.Builders.Features;
@@ -26,7 +27,7 @@ using static RuleDefinitions;
 
 namespace SolastaCommunityExpansion.Subclasses.Fighter;
 
-internal class Marshal : AbstractSubclass
+internal sealed class Marshal : AbstractSubclass
 {
     private CharacterSubclassDefinition Subclass;
 
@@ -45,19 +46,15 @@ internal static class KnowYourEnemyBuilder
 {
     private static int GetKnowledgeLevelOfEnemy(RulesetCharacter enemy)
     {
-        GameBestiaryEntry entry = null;
-        if (ServiceRepository.GetService<IGameLoreService>().Bestiary.TryGetBestiaryEntry(enemy, out entry))
-        {
-            return entry.KnowledgeLevelDefinition.Level;
-        }
-
-        return 0;
+        return ServiceRepository.GetService<IGameLoreService>().Bestiary.TryGetBestiaryEntry(enemy, out var entry)
+            ? entry.KnowledgeLevelDefinition.Level
+            : 0;
     }
 
     private static void KnowYourEnemyOnAttackDelegate(GameLocationCharacter attacker,
         GameLocationCharacter defender,
-        ActionModifier attackModifier,
-        RulesetAttackMode attackerAttackMode)
+        [CanBeNull] ActionModifier attackModifier,
+        [CanBeNull] RulesetAttackMode attackerAttackMode)
     {
         // no spell attack
         if (attackerAttackMode == null || attackModifier == null)
@@ -152,7 +149,7 @@ internal static class StudyYourEnemyBuilder
             bool proxyOnly,
             bool forceSelfConditionOnly,
             EffectApplication effectApplication = EffectApplication.All,
-            List<EffectFormFilter> filters = null)
+            [CanBeNull] List<EffectFormFilter> filters = null)
         {
             var manager = ServiceRepository.GetService<IGameLoreService>();
 
@@ -183,15 +180,14 @@ internal static class StudyYourEnemyBuilder
             var level = entry.KnowledgeLevelDefinition.Level;
             var num = level;
 
-            if (outcome == RollOutcome.Success
-                || outcome == RollOutcome.CriticalSuccess)
+            if (outcome is RollOutcome.Success or RollOutcome.CriticalSuccess)
             {
                 var num2 = outcome == RollOutcome.Success ? 1 : 2;
                 num = Mathf.Min(entry.KnowledgeLevelDefinition.Level + num2, 4);
                 manager.LearnMonsterKnowledge(entry.MonsterDefinition, manager.Bestiary.SortedKnowledgeLevels[num]);
             }
 
-            gameLocationCharacter?.RulesetCharacter.MonsterIdentificationRolled?.Invoke(
+            gameLocationCharacter.RulesetCharacter.MonsterIdentificationRolled?.Invoke(
                 gameLocationCharacter.RulesetCharacter, entry.MonsterDefinition, outcome, level, num);
         }
 
@@ -208,7 +204,7 @@ internal static class CoordinatedAttackBuilder
         GameLocationCharacter defender,
         RollOutcome outcome,
         CharacterActionParams actionParams,
-        RulesetAttackMode attackMode,
+        [NotNull] RulesetAttackMode attackMode,
         ActionModifier attackModifier)
     {
         // melee only
@@ -294,18 +290,20 @@ internal static class CoordinatedAttackBuilder
             reactions.Add(reactionParams);
         }
 
-        if (!reactions.Empty() && battleManager != null)
+        if (reactions.Empty() || battleManager == null)
         {
-            var actionService = ServiceRepository.GetService<IGameLocationActionService>();
-            var count = actionService.PendingReactionRequestGroups.Count;
-
-            foreach (var reaction in reactions)
-            {
-                actionService.ReactForOpportunityAttack(reaction);
-            }
-
-            yield return battleManager.WaitForReactions(attacker, actionService, count);
+            yield break;
         }
+
+        var actionService = ServiceRepository.GetService<IGameLocationActionService>();
+        var count = actionService.PendingReactionRequestGroups.Count;
+
+        foreach (var reaction in reactions)
+        {
+            actionService.ReactForOpportunityAttack(reaction);
+        }
+
+        yield return battleManager.WaitForReactions(attacker, actionService, count);
     }
 
     internal static FeatureDefinition BuildCoordinatedAttack()
@@ -396,13 +394,12 @@ internal static class EternalComradeBuilder
 
     internal static FeatureDefinitionFeatureSet BuildEternalComradeFeatureSet()
     {
-        var summonForm = new SummonForm();
-        summonForm.monsterDefinitionName = EternalComrade.Name;
+        var summonForm = new SummonForm {monsterDefinitionName = EternalComrade.Name};
 
-        var effectForm = new EffectForm();
-        effectForm.formType = EffectForm.EffectFormType.Summon;
-        effectForm.createdByCharacter = true;
-        effectForm.summonForm = summonForm;
+        var effectForm = new EffectForm
+        {
+            formType = EffectForm.EffectFormType.Summon, createdByCharacter = true, summonForm = summonForm
+        };
 
         // TODO: make this use concentration and reduce the duration to may be 3 rounds
         // TODO: increase the number of use to 2 and recharge per long rest
@@ -531,7 +528,7 @@ internal static class EncourageBuilder
                     .SetConditionForm(conditionEncouraged, ConditionForm.ConditionOperation.Add, false, false)
                     .Build()
             ).Build();
-        
+
         effect.SetCanBePlacedOnCharacter(true);
 
         return FeatureDefinitionPowerBuilder

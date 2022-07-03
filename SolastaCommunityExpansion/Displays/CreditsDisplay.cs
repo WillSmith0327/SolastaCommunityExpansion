@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using ModKit;
+using SolastaCommunityExpansion.Api.Infrastructure;
 using UnityExplorer;
 using static SolastaCommunityExpansion.Displays.PatchesDisplay;
 
@@ -25,7 +26,7 @@ internal static class CreditsDisplay
             "D6", "M. Brandmaier, F. Lorenz, M. Despard, J. Ball, J. Smedley, B. Amorsen, J. Bendoski, M. Oliveira,\n" +
                   "M. Harck, D. Schoop, K. Cooper, M. Thompson, L. Johnson, M. Piotrowski, E. Meyers, C. Alvarez\n" +
                   "R. Garcia, R. Name, G. Ruiz, A. Badeaux, S. Braden, E. Gilbert, C. Tontodonati, G. Johnson\n" +
-                  "J. Batanero, J. Gattis, J. Lamarre, H. Yes"
+                  "J. Batanero, J. Gattis, J. Lamarre, H. Yes, J. Dileo, L. Barker"
         }
     };
 
@@ -44,7 +45,6 @@ internal static class CreditsDisplay
             "high level spells, feats, bug models replacement, high level monsters, Warlock class and subclasses"
         ),
         ("ElAntonious", "Arcanist subclass, feats"),
-
         ("exsonics01", "Oath of Retribution subclass"),
         ("Holic75", "SolastaModHelpers, SolastaExtraContent"),
         (
@@ -52,13 +52,11 @@ internal static class CreditsDisplay
             "adv/dis rules, conjurations control, auto-equip, monster's health, pause UI, sorting, stocks prices, no attunement, xp scaling, character export, save by location, combat camera, diagnostics, custom icons, refactor, screen map"
         ),
         ("Nd", "Marshal and Opportunist subclasses"),
-
         ("RedOrca", "Path of the Light subclass, Indomitable Might"),
         (
             "SilverGriffon",
-            "pick pocket, lore friendly names, feats, face unlocks, sylvan armor unlock, empress garb skins, arcane foci items, belt of dwarvenkin, merchants, spells, DarkElf race"
+            "pick pocket, lore friendly names, feats, face unlocks, sylvan armor unlock, empress garb skins, arcane foci items, belt of dwarvenkin, merchants, spells, Dark Elf race, Divine Heart subclass"
         ),
-
         ("Spacehamster", "dataminer"),
         (
             "TPABOBAP",
@@ -74,7 +72,7 @@ internal static class CreditsDisplay
         ("Esker", "ruleset support, classes design, quality assurance"),
         ("Lyraele", "ruleset support, classes design, quality assurance"),
         ("PraiseThyBus", "quality assurance"),
-        ("",""),
+        ("", ""),
         ("Nyowwww", "Chinese translations"),
         ("Prioritizer", "Russian translations"),
         ("Burtsev-Alexey", "deep copy algorithm"),
@@ -83,8 +81,8 @@ internal static class CreditsDisplay
     };
 
     private static bool IsUnityExplorerInstalled { get; } =
-        File.Exists(Path.Combine(Main.MOD_FOLDER, "UnityExplorer.STANDALONE.Mono.dll")) &&
-        File.Exists(Path.Combine(Main.MOD_FOLDER, "UniverseLib.Mono.dll"));
+        File.Exists(Path.Combine(Main.ModFolder, "UnityExplorer.STANDALONE.Mono.dll")) &&
+        File.Exists(Path.Combine(Main.ModFolder, "UniverseLib.Mono.dll"));
 
     private static bool IsUnityExplorerEnabled { get; set; }
 
@@ -123,13 +121,13 @@ internal static class CreditsDisplay
 
         using (UI.HorizontalScope())
         {
-            UI.ActionButton("Donations".bold().yellow(), () =>
+            UI.ActionButton("Donations".Bold().Yellow(), () =>
             {
                 OpenUrl(
                     "https://www.paypal.com/donate/?business=JG4FX47DNHQAG&item_name=Support+Solasta+Community+Expansion");
             }, UI.Width(150));
 
-            UI.ActionButton("Wiki".bold().yellow(), () =>
+            UI.ActionButton("Wiki".Bold().Yellow(), () =>
             {
                 OpenUrl(
                     "https://github.com/SolastaMods/SolastaCommunityExpansion/wiki");
@@ -137,7 +135,7 @@ internal static class CreditsDisplay
 
             if (IsUnityExplorerInstalled)
             {
-                UI.ActionButton("Unity Explorer UI".bold().yellow(), () =>
+                UI.ActionButton("Unity Explorer UI".Bold().Yellow(), () =>
                 {
                     if (!IsUnityExplorerEnabled)
                     {
@@ -177,11 +175,11 @@ internal static class CreditsDisplay
         }
 
         // credits
-        foreach (var (author,content) in CreditsTable)
+        foreach (var (author, content) in CreditsTable)
         {
             using (UI.HorizontalScope())
             {
-                UI.Label(author.orange(), UI.Width(150));
+                UI.Label(author.Orange(), UI.Width(150));
                 UI.Label(content, UI.Width(600));
             }
         }
@@ -193,7 +191,7 @@ internal static class CreditsDisplay
         {
             using (UI.HorizontalScope())
             {
-                UI.Label(kvp.Key.orange(), UI.Width(150));
+                UI.Label(kvp.Key.Orange(), UI.Width(150));
                 UI.Label(kvp.Value, UI.Width(600));
             }
         }

@@ -142,6 +142,7 @@ ModUi/&Races=<color=yellow>Rassen und Unterrassen</color>
 ModUi/&RacesClassesSubclasses=Rassen, Klassen und Unterklassen
 ModUi/&RecipeCost=<color=white>Rezeptkosten</color>
 ModUi/&RecipesInDm=Rezepte in DM
+ModUi/&ReduceDarkelfLightPenalty=Reduziere den Lichtmalus der Dunkelelf auf -1W4 auf Angriffe anstatt auf den Nachteil
 ModUi/&RelicForgeries=Reliquienfälschungen
 ModUi/&RemoveAttunementRequirements=Einstimmungsanforderungen entfernen <b><i><color=#C04040E0>[Neustart erforderlich]</color></i></b>
 ModUi/&RemoveBugVisualModels=Ersetzen Sie fehlerähnliche Modelle durch alternative Grafiken im Spiel <b><i><color=#C04040E0>[Neustart erforderlich]</color></i></b>
@@ -177,8 +178,8 @@ ModUi/&Translate=Übersetzen
 ModUi/&TranslateCancel=Stornieren Sie {0} um {1}
 ModUi/&TranslationEngine=Übersetzungsmaschine
 ModUi/&Translations=Übersetzungen
-ModUi/&UnleashEnemyAsNpc=Erlaube die Auswahl von Monstern auf NPC-Gadgets <i><color=yellow>[drücke <color=#1E81B0>STRG</color>, während du im Gadget-Feld auf „Auswählen“ klickst]</color></i>
-ModUi/&UnleashNpcAsEnemy=Ermöglichen Sie die Auswahl von NPCs auf Monster-Gadgets <i><color=yellow>[drücken Sie <color=#1E81B0>STRG</color>, während Sie im Gadget-Feld auf „Auswählen“ klicken]</color></i>
+ModUi/&UnleashEnemyAsNpc=Erlaube die Auswahl von Monstern auf NPC-Gadgets
+ModUi/&UnleashNpcAsEnemy=Ermöglichen Sie die Auswahl von NPCs auf Monster-Gadgets
 ModUi/&UnlockAllNpcFaces=Schalte alle NPC-Gesichter frei
 ModUi/&UnlockEyeStyles=Schalte Augenstile frei
 ModUi/&UnlockGlowingColorsForAllMarksAndTatoos=Schalten Sie leuchtende Farben für alle Markierungen und Tätowierungen frei
@@ -186,10 +187,11 @@ ModUi/&UnlockGlowingEyeColors=Fügen Sie leuchtende Augenfarben hinzu <b><i><col
 ModUi/&UnlockMarkAndTatoosForAllCharacters=Schalte <color=Orange>Zauberer</color>-Ursprungsmarkierungen und Tätowierungen für alle Charaktere frei
 ModUi/&UseHeightOneCylinderEffect=Zeigen Sie einen Zylindereffekt der Höhe 1 an, wenn Sie <color=orange>Schwarze Tentakel, Verstricken, Fett</color> (quadratisch) und <color=orange>Stachelwachstum</color> (rund) wirken.
 ModUi/&UseOfficialAdvantageDisadvantageRules=Verwenden Sie die offiziellen Vorteils- / Nachteilsregeln
-ModUi/&Visuals=<color=yellow>Visuals:</color>
+ModUi/&Visuals=<color=yellow>Visuals:</color> <b><i><color=#C04040E0>[Neustart erforderlich]</color></i></b>
 ModUi/&TotalCraftingTimeModifier=<color=white>Herstellungszeit verkürzen um</color>
 ModUi/&ChangeSleetStormToCube=Ändern Sie <color=orange>Schneeregen</color>, um einen Würfel anstelle eines Zylinders zu verwenden
 ModUi/&Category=Kategorie
 ModUi/&WeaponTag=Waffen-Tag
 ModUi/&ItemTag=Artikel-Tag
 ModUi/&EnableAdditionalBackstoryDisplay=Aktivieren Sie die zusätzliche Anzeige der Hintergrundgeschichte bei der Hintergrundinspektion
+ModUi/&EnableStatsOnHeroTooltip=Zeigen Sie Statistiken im Tooltip des Helden an <i><color=yellow>[d. h.: kritische Treffer, kritische Fehlschläge usw.]</color></i>

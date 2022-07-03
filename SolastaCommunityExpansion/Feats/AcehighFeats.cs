@@ -290,13 +290,14 @@ internal static class AcehighFeats
                 return;
             }
 
-            if (attackMode is not {Reach: false, Ranged: true, Thrown: false})
+            if (attackMode is not ({Reach: false, Ranged: true, Thrown: false} or
+                {Reach: false, Ranged: false, Thrown: true}))
             {
                 return;
             }
 
-            var toHit = -5;
-            var toDamage = 10;
+            const int toHit = -5;
+            const int toDamage = 10;
 
             attackMode.ToHitBonus += toHit;
             attackMode.ToHitBonusTrends.Add(new RuleDefinitions.TrendInfo(toHit,

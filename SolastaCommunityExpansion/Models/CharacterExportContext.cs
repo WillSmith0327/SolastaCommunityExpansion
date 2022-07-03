@@ -10,7 +10,7 @@ namespace SolastaCommunityExpansion.Models;
 
 internal static class CharacterExportContext
 {
-    internal const string INPUT_MODAL_MARK = "Message/&CharacterExportModalContentDescription";
+    internal const string InputModalMark = "Message/&CharacterExportModalContentDescription";
 
     internal static TMP_InputField InputField { get; private set; }
 
@@ -48,15 +48,15 @@ internal static class CharacterExportContext
         InputModalVisible = true;
 
         messageModal.Show(MessageModal.Severity.Informative1,
-            "Message/&CharacterExportModalTitleDescription", INPUT_MODAL_MARK,
-            "Message/&MessageOkTitle", "Message/&MessageCancelTitle", messageValidated, messageCancelled);
+            "Message/&CharacterExportModalTitleDescription", InputModalMark,
+            "Message/&MessageOkTitle", "Message/&MessageCancelTitle", MessageValidated, MessageCancelled);
 
-        void messageCancelled()
+        void MessageCancelled()
         {
             InputModalVisible = false;
         }
 
-        void messageValidated()
+        void MessageValidated()
         {
             var newFirstName = InputField.text;
             var newSurname = string.Empty;
@@ -64,7 +64,7 @@ internal static class CharacterExportContext
 
             var usedNames = Directory
                 .EnumerateFiles(TacticalAdventuresApplication.GameCharactersDirectory, "*.chr")
-                .Select(f => Path.GetFileNameWithoutExtension(f))
+                .Select(Path.GetFileNameWithoutExtension)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
             newFirstName = newFirstName.TrimStart();
@@ -101,7 +101,7 @@ internal static class CharacterExportContext
         }
     }
 
-    internal static void ExportCharacter(RulesetCharacterHero heroCharacter, string newFirstName, string newSurname)
+    private static void ExportCharacter(RulesetCharacterHero heroCharacter, string newFirstName, string newSurname)
     {
         // record current name, etc..
         var guid = heroCharacter.Guid;

@@ -142,6 +142,7 @@ ModUi/&Races=<color=yellow>Razze e sottorazze</color>
 ModUi/&RacesClassesSubclasses=Razze, classi e sottoclassi
 ModUi/&RecipeCost=<color=white>Costo della ricetta</color>
 ModUi/&RecipesInDm=Ricette in DM
+ModUi/&ReduceDarkelfLightPenalty=Riduce la Penalità Luce degli Elfi Oscuri a -1d4 sugli attacchi invece che su Svantaggio
 ModUi/&RelicForgeries=Falsi di reliquie
 ModUi/&RemoveAttunementRequirements=Rimuovi i requisiti di sintonizzazione <b><i><color=#C04040E0>[Richiede il riavvio]</color></i></b>
 ModUi/&RemoveBugVisualModels=Sostituisci i modelli simili a bug con elementi visivi alternativi nel gioco <b><i><color=#C04040E0>[Richiede il riavvio]</color></i></b>
@@ -177,8 +178,8 @@ ModUi/&Translate=Tradurre
 ModUi/&TranslateCancel=Annulla {0} alle {1}
 ModUi/&TranslationEngine=Motore di traduzione
 ModUi/&Translations=Traduzioni
-ModUi/&UnleashEnemyAsNpc=Consenti ai mostri di essere selezionati sui gadget NPC <i><color=yellow>[premi <color=#1E81B0>CTRL</color> mentre fai clic su Seleziona sul pannello del gadget]</color></i>
-ModUi/&UnleashNpcAsEnemy=Consenti agli NPC di essere selezionati sui gadget dei mostri <i><color=yellow>[premi <color=#1E81B0>CTRL</color> mentre fai clic su Seleziona sul pannello dei gadget]</color></i>
+ModUi/&UnleashEnemyAsNpc=Consenti ai mostri di essere selezionati sui gadget NPC
+ModUi/&UnleashNpcAsEnemy=Consenti agli NPC di essere selezionati sui gadget dei mostri
 ModUi/&UnlockAllNpcFaces=Sblocca tutte le facce degli NPC
 ModUi/&UnlockEyeStyles=Sblocca gli stili degli occhi
 ModUi/&UnlockGlowingColorsForAllMarksAndTatoos=Sblocca colori luminosi per tutti i segni e i tatuaggi
@@ -186,10 +187,11 @@ ModUi/&UnlockGlowingEyeColors=Aggiungi colori degli occhi luminosi <b><i><color=
 ModUi/&UnlockMarkAndTatoosForAllCharacters=Sblocca i segni di origine e i tatuaggi di <color=Orange>Stregone</color> per tutti i personaggi
 ModUi/&UseHeightOneCylinderEffect=Mostra un effetto cilindro di altezza 1 quando lanci <color=orange>Black Tentacles, Entangle, Grease</color> (quadrato) e <color=orange>Spike Growth</color> (tondo)
 ModUi/&UseOfficialAdvantageDisadvantageRules=Usa le regole ufficiali di vantaggio/svantaggio
-ModUi/&Visuals=<color=yellow>Visuali:</color>
+ModUi/&Visuals=<color=yellow>Visuali:</color> <b><i><color=#C04040E0>[Richiede il riavvio]</color></i></b>
 ModUi/&TotalCraftingTimeModifier=<color=white>Riduci il tempo di creazione di</color>
 ModUi/&ChangeSleetStormToCube=Cambia <color=orange>Sleet Storm</color> per usare un cubo invece di un cilindro
 ModUi/&Category=Categoria
 ModUi/&WeaponTag=Etichetta arma
 ModUi/&ItemTag=Etichetta articolo
 ModUi/&EnableAdditionalBackstoryDisplay=Abilita la visualizzazione aggiuntiva del retroscena durante l'ispezione in background
+ModUi/&EnableStatsOnHeroTooltip=Mostra le statistiche sulla descrizione comando dell'eroe <i><color=yellow>[es.: colpi critici, fallimenti critici, ecc.]</color></i>

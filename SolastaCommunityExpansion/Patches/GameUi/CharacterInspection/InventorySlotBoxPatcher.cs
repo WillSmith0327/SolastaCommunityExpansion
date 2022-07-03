@@ -17,14 +17,13 @@ internal static class InventorySlotBox_RefreshState
         }
 
         if (!Main.Settings.EnableInventoryFilteringAndSorting
+            || Global.IsMultiplayer
             || !Main.Settings.EnableInventoryTaintNonProficientItemsRed)
         {
             return;
         }
 
-        if (__instance.InventorySlot == null
-            || __instance.InventorySlot.EquipedItem == null
-            || __instance.equipedItemImage == null)
+        if (__instance.InventorySlot?.EquipedItem == null || __instance.equipedItemImage == null)
         {
             return;
         }
@@ -33,7 +32,7 @@ internal static class InventorySlotBox_RefreshState
 
         if (!Global.InspectedHero.IsProficientWithItem(itemDefinition))
         {
-            __instance.equipedItemImage.color = new Color(1, 0, 0);
+            __instance.equipedItemImage.color = Color.red;
         }
     }
 }
