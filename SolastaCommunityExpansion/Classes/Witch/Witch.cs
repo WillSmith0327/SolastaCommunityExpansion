@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using SolastaCommunityExpansion.Api;
 using SolastaCommunityExpansion.Api.Extensions;
 using SolastaCommunityExpansion.Builders;
@@ -27,7 +28,7 @@ namespace SolastaCommunityExpansion.Classes.Witch;
 
 internal static class Witch
 {
-    public static readonly Guid WITCH_BASE_GUID = new("ea7715dd-00cb-45a3-a8c4-458d0639d72c");
+    private static readonly Guid WitchBaseGuid = new("ea7715dd-00cb-45a3-a8c4-458d0639d72c");
 
     public static readonly CharacterClassDefinition Instance = BuildAndAddClass();
 
@@ -45,7 +46,7 @@ internal static class Witch
     private static FeatureDefinitionFeatureSet FeatureDefinitionFeatureSetWitchFamiliar { get; set; }
 
     internal static SpellListDefinition WitchSpellList => _witchSpellList ??= SpellListDefinitionBuilder
-        .Create(SpellListDefinitions.SpellListWizard, "WitchSpellList", WITCH_BASE_GUID)
+        .Create(SpellListDefinitions.SpellListWizard, "WitchSpellList", WitchBaseGuid)
         .SetGuiPresentationNoContent()
         .ClearSpells()
         .SetSpellsAtLevel(0,
@@ -74,7 +75,7 @@ internal static class Witch
         .FinalizeSpells()
         .AddToDB();
 
-    private static void BuildClassStats(CharacterClassDefinitionBuilder classBuilder)
+    private static void BuildClassStats([NotNull] CharacterClassDefinitionBuilder classBuilder)
     {
         classBuilder
             .SetAnimationId(AnimationDefinitions.ClassAnimationId.Wizard)
@@ -103,7 +104,7 @@ internal static class Witch
                 DatabaseHelper.SkillDefinitions.Religion);
     }
 
-    private static void BuildEquipment(CharacterClassDefinitionBuilder classBuilder)
+    private static void BuildEquipment([NotNull] CharacterClassDefinitionBuilder classBuilder)
     {
         classBuilder
             .AddEquipmentRow(
@@ -128,26 +129,26 @@ internal static class Witch
     private static void BuildProficiencies()
     {
         FeatureDefinitionProficiencyArmor = FeatureDefinitionProficiencyBuilder
-            .Create("ProficiencyWitchArmor", WITCH_BASE_GUID)
+            .Create("ProficiencyWitchArmor", WitchBaseGuid)
             .SetGuiPresentation("WitchArmorProficiency", Category.Class)
             .SetProficiencies(ProficiencyType.Armor, EquipmentDefinitions.LightArmorCategory)
             .AddToDB();
 
         FeatureDefinitionProficiencyWeapon = FeatureDefinitionProficiencyBuilder
-            .Create("ProficiencyWitchWeapon", WITCH_BASE_GUID)
+            .Create("ProficiencyWitchWeapon", WitchBaseGuid)
             .SetGuiPresentation("WitchWeaponProficiency", Category.Class)
             .SetProficiencies(ProficiencyType.Weapon, EquipmentDefinitions.SimpleWeaponCategory)
             .AddToDB();
 
         FeatureDefinitionProficiencySavingThrow = FeatureDefinitionProficiencyBuilder
-            .Create("ProficiencyWitchSavingthrow", WITCH_BASE_GUID)
+            .Create("ProficiencyWitchSavingthrow", WitchBaseGuid)
             .SetGuiPresentation("WitchSavingthrowProficiency", Category.Class)
             .SetProficiencies(ProficiencyType.SavingThrow, AttributeDefinitions.Charisma,
                 AttributeDefinitions.Wisdom)
             .AddToDB();
 
         FeatureDefinitionPointPoolSkills = FeatureDefinitionPointPoolBuilder
-            .Create("PointPoolWitchSkillPoints", WITCH_BASE_GUID)
+            .Create("PointPoolWitchSkillPoints", WitchBaseGuid)
             .SetGuiPresentation("WitchSkillProficiency", Category.Class)
             .SetPool(HeroDefinitions.PointsPoolType.Skill, 2)
             .RestrictChoices(
@@ -161,7 +162,7 @@ internal static class Witch
             .AddToDB();
 
         FeatureDefinitionPointPoolTools = FeatureDefinitionPointPoolBuilder
-            .Create("ProficiencyWitchTool", WITCH_BASE_GUID)
+            .Create("ProficiencyWitchTool", WitchBaseGuid)
             .SetGuiPresentation("WitchToolProficiency", Category.Class)
             .SetPool(HeroDefinitions.PointsPoolType.Tool, 1)
             .RestrictChoices(
@@ -518,7 +519,7 @@ internal static class Witch
         };
 
         FeatureDefinitionCastSpellWitch = FeatureDefinitionCastSpellBuilder
-            .Create("CastSpellWitch", WITCH_BASE_GUID)
+            .Create("CastSpellWitch", WitchBaseGuid)
             .SetGuiPresentation("WitchSpellcasting", Category.Class)
             .SetKnownCantrips(4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6)
             .SetKnownSpells(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15)
@@ -537,14 +538,14 @@ internal static class Witch
     private static void BuildRitualCasting()
     {
         var witchRitualCastingMagicAffinity = FeatureDefinitionMagicAffinityBuilder
-            .Create("WitchRitualCastingMagicAffinity", WITCH_BASE_GUID)
+            .Create("WitchRitualCastingMagicAffinity", WitchBaseGuid)
             .SetGuiPresentation(Category.Class)
             .SetRitualCasting((RitualCasting)ExtraRitualCasting.Known)
             .AddToDB();
 
         FeatureDefinitionFeatureSetRitualCasting = FeatureDefinitionFeatureSetBuilder
             .Create(FeatureDefinitionFeatureSets.FeatureSetWizardRitualCasting, "WitchFeatureSetRitualCasting",
-                WITCH_BASE_GUID)
+                WitchBaseGuid)
             .SetGuiPresentation(Category.Class)
             .SetFeatureSet(witchRitualCastingMagicAffinity,
                 FeatureDefinitionActionAffinitys.ActionAffinityWizardRitualCasting)
@@ -553,8 +554,8 @@ internal static class Witch
 
     private static void BuildWitchCurses()
     {
-        // Legend: 
-        // +: implemented 
+        // Legend:
+        // +: implemented
         // -: will not implement
         // ?: maybe? not sure how
 
@@ -565,46 +566,46 @@ internal static class Witch
         //? Hollow: When you or familiar have killing blow, gain witch level + CHA mod in temp hp
         //? Infested: immune to disease + familiar can be swarm of rats at 2nd level + swarm of insects at lvl 7
         //+ Loveless: immune to charm
-        //? Possessed: learn an additional witch spell of level you have spell slots at 1,4,8,12 
+        //? Possessed: learn an additional witch spell of level you have spell slots at 1,4,8,12
         //? Starving: no need to eat (?), immune to poison
         //+ Visions: Add CHA to initiative, on top of DEX
         //- Whispers: can communicate telepathically 30 feet
 
         var burnedFireRes = FeatureDefinitionDamageAffinityBuilder
-            .Create(DamageAffinityFireResistance, "WitchBurnedFireResistance", WITCH_BASE_GUID)
+            .Create(DamageAffinityFireResistance, "WitchBurnedFireResistance", WitchBaseGuid)
             .SetGuiPresentation(Category.Class)
             .AddToDB();
 
         var burnedProduceFlame = FeatureDefinitionBonusCantripsBuilder
             .Create(FeatureDefinitionBonusCantripss.BonusCantripsDomainElementaFire, "WitchBurnedProduceFlame",
-                WITCH_BASE_GUID)
+                WitchBaseGuid)
             .SetGuiPresentation(Category.Class)
             .SetBonusCantrips(ProduceFlame)
             .AddToDB();
 
         var burnedCurse = FeatureDefinitionFeatureSetBuilder
             .Create(FeatureDefinitionFeatureSets.FeatureSetWizardRitualCasting, "WitchFeatureSetBurnedCurse",
-                WITCH_BASE_GUID)
+                WitchBaseGuid)
             .SetGuiPresentation(Category.Class, ProduceFlame.GuiPresentation.SpriteReference)
             .SetFeatureSet(burnedFireRes, burnedProduceFlame)
             .AddToDB();
 
         var lovelessCharmImmunity = FeatureDefinitionConditionAffinityBuilder
             .Create(FeatureDefinitionConditionAffinitys.ConditionAffinityCharmImmunity,
-                "WitchLovelessCharmImmunity", WITCH_BASE_GUID)
+                "WitchLovelessCharmImmunity", WitchBaseGuid)
             .SetGuiPresentation(Category.Class)
             .AddToDB();
 
         var lovelessCurse = FeatureDefinitionFeatureSetBuilder
             .Create(FeatureDefinitionFeatureSets.FeatureSetWizardRitualCasting, "WitchFeatureSetLovelessCurse",
-                WITCH_BASE_GUID)
+                WitchBaseGuid)
             .SetGuiPresentation(Category.Class, CharmPerson.GuiPresentation.SpriteReference)
             .SetFeatureSet(lovelessCharmImmunity)
             .AddToDB();
 
         // NOTE: I have no idea how to apply a Charisma bonus, so setting the initiative bonus to 3. It seems like only the "Additive" operation works
         var visionsInitiative = FeatureDefinitionAttributeModifierBuilder
-            .Create("WitchVisionsInitiative", WITCH_BASE_GUID)
+            .Create("WitchVisionsInitiative", WitchBaseGuid)
             .SetGuiPresentation(Category.Class)
             .SetModifier(AttributeModifierOperation.Additive, AttributeDefinitions.Initiative, 3)
             .SetModifierAbilityScore(AttributeDefinitions.Charisma)
@@ -613,7 +614,7 @@ internal static class Witch
 
         var visionsCurse = FeatureDefinitionFeatureSetBuilder
             .Create(FeatureDefinitionFeatureSets.FeatureSetWizardRitualCasting, "WitchFeatureSetVisionsCurse",
-                WITCH_BASE_GUID)
+                WitchBaseGuid)
             .SetGuiPresentation(Category.Class, Blindness.GuiPresentation.SpriteReference)
             .SetFeatureSet(visionsInitiative)
             .AddToDB();
@@ -621,7 +622,7 @@ internal static class Witch
         var cursesFeatures = new FeatureDefinition[] {burnedCurse, lovelessCurse, visionsCurse};
 
         FeatureDefinitionFeatureSetWitchCurses = FeatureDefinitionFeatureSetCustomBuilder
-            .Create("WitchCurseChoice", WITCH_BASE_GUID)
+            .Create("WitchCurseChoice", WitchBaseGuid)
             .SetGuiPresentation(Category.Feature)
             .SetRequireClassLevels(true)
             .SetLevelFeatures(1, cursesFeatures)
@@ -631,7 +632,7 @@ internal static class Witch
     private static void BuildMaledictions()
     {
         // Maledictions are actions unless mentioned otherwise
-        // If a Malediction calls for an attack roll or saving throw, it uses your spell attack bonus or spell save DC, unless mentioned otherwise. 
+        // If a Malediction calls for an attack roll or saving throw, it uses your spell attack bonus or spell save DC, unless mentioned otherwise.
         // All Maledictions require verbal or somatic components
         // If a Malediction lasts for a duration, i.e. until end of next turn (unless mentioned otherwise), you concentrate on it as you would a spell.
         // You can concentrate on a Malediction and a spell at the same time, and you make only one Constitution saving throw to maintain your concentration on both.
@@ -644,15 +645,15 @@ internal static class Witch
         // lvl 13: 6
         // lvl 17: 7
 
-        // Legend: 
-        // +: implemented 
+        // Legend:
+        // +: implemented
 
         //+ Abate: 60 feet CHA save, no reactions on fail
         //+ Apathy: 60 feet CHA save, calm emotions effect on fail
         // Beckon Familiar: summon familiar as an action, cooldown of 1 minute (how to implement cooldowns??)
         // Bleeding: 60 feet CON save, applies a Hex-like effect of 1d4 extra damage on any damage on fail
         //+ Charm: 60 feet WIS save, Charm Person/Monster effect on fail
-        // Dire Familiar: for 1 minute, Familiar gains double witch level in hp and CHA mod bonus on dmg rolls 
+        // Dire Familiar: for 1 minute, Familiar gains double witch level in hp and CHA mod bonus on dmg rolls
         //                can cast other maledictions while active -> This should be a power or lvl 7 Improved Familiar feature?
         //+ Disorient: 60 feet CON save, -1d6 on attack rolls on fail
         // Doomward: 60 feet friendly creature, Death Ward effect, cannot target that creature again until short or long rest (i.e. add a Doomward fatigue debuff?)
@@ -677,7 +678,7 @@ internal static class Witch
 
         // Abate
         var abateConditionDefinition = ConditionDefinitionBuilder
-            .Create(ConditionShocked, "ConditionAbate", WITCH_BASE_GUID)
+            .Create(ConditionShocked, "ConditionAbate", WitchBaseGuid)
             .SetGuiPresentation("Abate", Category.Condition, ConditionShocked.GuiPresentation.SpriteReference)
             .SetConditionType(ConditionType.Detrimental)
             .SetDuration(DurationType.Round, 1)
@@ -685,15 +686,14 @@ internal static class Witch
             .AddConditionTags("Malediction")
             .AddToDB();
 
-        var abateConditionForm = new ConditionForm();
+        var abateConditionForm = new ConditionForm {conditionDefinition = abateConditionDefinition};
 
-        abateConditionForm.conditionDefinition = abateConditionDefinition;
-
-        var abateEffectForm = new EffectForm();
-
-        abateEffectForm.formType = EffectForm.EffectFormType.Condition;
-        abateEffectForm.createdByCharacter = true;
-        abateEffectForm.conditionForm = abateConditionForm;
+        var abateEffectForm = new EffectForm
+        {
+            formType = EffectForm.EffectFormType.Condition,
+            createdByCharacter = true,
+            conditionForm = abateConditionForm
+        };
 
         var abateEffectDescription = ShockingGrasp.EffectDescription
             .Copy()
@@ -707,7 +707,7 @@ internal static class Witch
             .SetEffectForms(abateEffectForm);
 
         var abate = FeatureDefinitionPowerBuilder
-            .Create("WitchMaledictionAbate", WITCH_BASE_GUID)
+            .Create("WitchMaledictionAbate", WitchBaseGuid)
             .SetActivation(ActivationTime.Action, 0)
             .SetGuiPresentation(Category.Class, ShockingGrasp.GuiPresentation.SpriteReference)
             .SetRechargeRate(RechargeRate.AtWill)
@@ -717,7 +717,7 @@ internal static class Witch
 
         // Apathy
         var apathyConditionDefinition = ConditionDefinitionBuilder
-            .Create(ConditionCalmedByCalmEmotionsEnemy, "ConditionApathy", WITCH_BASE_GUID)
+            .Create(ConditionCalmedByCalmEmotionsEnemy, "ConditionApathy", WitchBaseGuid)
             .SetGuiPresentation("Apathy", Category.Condition,
                 ConditionCalmedByCalmEmotionsEnemy.GuiPresentation.SpriteReference)
             .SetConditionType(ConditionType.Detrimental)
@@ -726,15 +726,14 @@ internal static class Witch
             .AddConditionTags("Malediction")
             .AddToDB();
 
-        var apathyConditionForm = new ConditionForm();
+        var apathyConditionForm = new ConditionForm {conditionDefinition = apathyConditionDefinition};
 
-        apathyConditionForm.conditionDefinition = apathyConditionDefinition;
-
-        var apathyEffectForm = new EffectForm();
-
-        apathyEffectForm.formType = EffectForm.EffectFormType.Condition;
-        apathyEffectForm.createdByCharacter = true;
-        apathyEffectForm.conditionForm = apathyConditionForm;
+        var apathyEffectForm = new EffectForm
+        {
+            formType = EffectForm.EffectFormType.Condition,
+            createdByCharacter = true,
+            conditionForm = apathyConditionForm
+        };
 
         var apathyEffectDescription = CalmEmotionsOnEnemy.EffectDescription
             .Copy()
@@ -748,7 +747,7 @@ internal static class Witch
             .SetEffectForms(apathyEffectForm);
 
         var apathy = FeatureDefinitionPowerBuilder
-            .Create("WitchMaledictionApathy", WITCH_BASE_GUID)
+            .Create("WitchMaledictionApathy", WitchBaseGuid)
             .SetActivation(ActivationTime.Action, 0)
             .SetGuiPresentation(Category.Class, CalmEmotions.GuiPresentation.SpriteReference)
             .SetRechargeRate(RechargeRate.AtWill)
@@ -758,7 +757,7 @@ internal static class Witch
 
         // Charm
         var charmConditionDefinition = ConditionDefinitionBuilder
-            .Create(ConditionDefinitions.ConditionCharmed, "ConditionCharm", WITCH_BASE_GUID)
+            .Create(ConditionDefinitions.ConditionCharmed, "ConditionCharm", WitchBaseGuid)
             .SetGuiPresentation("Charm", Category.Condition,
                 ConditionDefinitions.ConditionCharmed.GuiPresentation.SpriteReference)
             .SetConditionType(ConditionType.Detrimental)
@@ -767,15 +766,14 @@ internal static class Witch
             .AddConditionTags("Malediction")
             .AddToDB();
 
-        var charmConditionForm = new ConditionForm();
+        var charmConditionForm = new ConditionForm {conditionDefinition = charmConditionDefinition};
 
-        charmConditionForm.conditionDefinition = charmConditionDefinition;
-
-        var charmEffectForm = new EffectForm();
-
-        charmEffectForm.formType = EffectForm.EffectFormType.Condition;
-        charmEffectForm.createdByCharacter = true;
-        charmEffectForm.conditionForm = charmConditionForm;
+        var charmEffectForm = new EffectForm
+        {
+            formType = EffectForm.EffectFormType.Condition,
+            createdByCharacter = true,
+            conditionForm = charmConditionForm
+        };
 
         var charmEffectDescription = CharmPerson.EffectDescription
             .Copy()
@@ -789,7 +787,7 @@ internal static class Witch
             .SetEffectForms(charmEffectForm);
 
         var charm = FeatureDefinitionPowerBuilder
-            .Create("WitchMaledictionCharm", WITCH_BASE_GUID)
+            .Create("WitchMaledictionCharm", WitchBaseGuid)
             .SetActivation(ActivationTime.Action, 0)
             .SetGuiPresentation(Category.Class, CharmPerson.GuiPresentation.SpriteReference)
             .SetRechargeRate(RechargeRate.AtWill)
@@ -800,13 +798,13 @@ internal static class Witch
         // Disorient
         var disorientCombatAffinity = FeatureDefinitionCombatAffinityBuilder
             .Create(FeatureDefinitionCombatAffinitys.CombatAffinityBaned, "CombatAffinityDisorient",
-                WITCH_BASE_GUID)
+                WitchBaseGuid)
             .SetGuiPresentation("Disorient", Category.Modifier)
             .SetMyAttackModifierDieType(DieType.D6)
             .AddToDB();
 
         var disorientConditionDefinition = ConditionDefinitionBuilder
-            .Create(ConditionBaned, "ConditionDisorient", WITCH_BASE_GUID)
+            .Create(ConditionBaned, "ConditionDisorient", WitchBaseGuid)
             .SetGuiPresentation("Disorient", Category.Condition, ConditionBaned.GuiPresentation.SpriteReference)
             .SetConditionType(ConditionType.Detrimental)
             .SetDuration(DurationType.Round, 1)
@@ -815,15 +813,14 @@ internal static class Witch
             .SetFeatures(disorientCombatAffinity)
             .AddToDB();
 
-        var disorientConditionForm = new ConditionForm();
+        var disorientConditionForm = new ConditionForm {conditionDefinition = disorientConditionDefinition};
 
-        disorientConditionForm.conditionDefinition = disorientConditionDefinition;
-
-        var disorientEffectForm = new EffectForm();
-
-        disorientEffectForm.formType = EffectForm.EffectFormType.Condition;
-        disorientEffectForm.createdByCharacter = true;
-        disorientEffectForm.conditionForm = disorientConditionForm;
+        var disorientEffectForm = new EffectForm
+        {
+            formType = EffectForm.EffectFormType.Condition,
+            createdByCharacter = true,
+            conditionForm = disorientConditionForm
+        };
 
         var disorientEffectDescription = Bane.EffectDescription
             .Copy()
@@ -837,7 +834,7 @@ internal static class Witch
             .SetEffectForms(disorientEffectForm);
 
         var disorient = FeatureDefinitionPowerBuilder
-            .Create("WitchMaledictionDisorient", WITCH_BASE_GUID)
+            .Create("WitchMaledictionDisorient", WitchBaseGuid)
             .SetActivation(ActivationTime.Action, 0)
             .SetGuiPresentation(Category.Class, Bane.GuiPresentation.SpriteReference)
             .SetRechargeRate(RechargeRate.AtWill)
@@ -847,7 +844,7 @@ internal static class Witch
 
         // Evil Eye
         var evileyeConditionDefinition = ConditionDefinitionBuilder
-            .Create(ConditionDefinitions.ConditionFrightenedFear, "ConditionEvilEye", WITCH_BASE_GUID)
+            .Create(ConditionDefinitions.ConditionFrightenedFear, "ConditionEvilEye", WitchBaseGuid)
             .SetGuiPresentation("EvilEye", Category.Condition,
                 ConditionDefinitions.ConditionFrightenedFear.GuiPresentation.SpriteReference)
             .SetConditionType(ConditionType.Detrimental)
@@ -857,15 +854,14 @@ internal static class Witch
             .ClearRecurrentEffectForms()
             .AddToDB();
 
-        var evileyeConditionForm = new ConditionForm();
+        var evileyeConditionForm = new ConditionForm {conditionDefinition = evileyeConditionDefinition};
 
-        evileyeConditionForm.conditionDefinition = evileyeConditionDefinition;
-
-        var evileyeEffectForm = new EffectForm();
-
-        evileyeEffectForm.formType = EffectForm.EffectFormType.Condition;
-        evileyeEffectForm.createdByCharacter = true;
-        evileyeEffectForm.conditionForm = evileyeConditionForm;
+        var evileyeEffectForm = new EffectForm
+        {
+            formType = EffectForm.EffectFormType.Condition,
+            createdByCharacter = true,
+            conditionForm = evileyeConditionForm
+        };
 
         var evileyeEffectDescription = Fear.EffectDescription.Copy()
             .SetDuration(DurationType.Round, 1)
@@ -878,7 +874,7 @@ internal static class Witch
             .SetEffectForms(evileyeEffectForm);
 
         var evileye = FeatureDefinitionPowerBuilder
-            .Create("WitchMaledictionEvilEye", WITCH_BASE_GUID)
+            .Create("WitchMaledictionEvilEye", WitchBaseGuid)
             .SetActivation(ActivationTime.Action, 0)
             .SetGuiPresentation(Category.Class, Fear.GuiPresentation.SpriteReference)
             .SetRechargeRate(RechargeRate.AtWill)
@@ -895,7 +891,7 @@ internal static class Witch
             .SetRange(RangeType.Self);
 
         var obfuscate = FeatureDefinitionPowerBuilder
-            .Create("WitchMaledictionObfuscate", WITCH_BASE_GUID)
+            .Create("WitchMaledictionObfuscate", WitchBaseGuid)
             .SetActivation(ActivationTime.Action, 0)
             .SetGuiPresentation(Category.Class, FogCloud.GuiPresentation.SpriteReference)
             .SetRechargeRate(RechargeRate.AtWill)
@@ -905,7 +901,7 @@ internal static class Witch
 
         // Pox
         var poxConditionDefinition = ConditionDefinitionBuilder
-            .Create(ConditionDefinitions.ConditionPoisoned, "ConditionPox", WITCH_BASE_GUID)
+            .Create(ConditionDefinitions.ConditionPoisoned, "ConditionPox", WitchBaseGuid)
             .SetGuiPresentation("Pox", Category.Condition,
                 ConditionDefinitions.ConditionPoisoned.GuiPresentation.SpriteReference)
             .SetConditionType(ConditionType.Detrimental)
@@ -915,15 +911,14 @@ internal static class Witch
             .ClearRecurrentEffectForms()
             .AddToDB();
 
-        var poxConditionForm = new ConditionForm();
+        var poxConditionForm = new ConditionForm {conditionDefinition = poxConditionDefinition};
 
-        poxConditionForm.conditionDefinition = poxConditionDefinition;
-
-        var poxEffectForm = new EffectForm();
-
-        poxEffectForm.formType = EffectForm.EffectFormType.Condition;
-        poxEffectForm.createdByCharacter = true;
-        poxEffectForm.conditionForm = poxConditionForm;
+        var poxEffectForm = new EffectForm
+        {
+            formType = EffectForm.EffectFormType.Condition,
+            createdByCharacter = true,
+            conditionForm = poxConditionForm
+        };
 
         var poxEffectDescription = PoisonSpray.EffectDescription
             .Copy()
@@ -937,7 +932,7 @@ internal static class Witch
             .SetEffectForms(poxEffectForm);
 
         var pox = FeatureDefinitionPowerBuilder
-            .Create("WitchMaledictionPox", WITCH_BASE_GUID)
+            .Create("WitchMaledictionPox", WitchBaseGuid)
             .SetActivation(ActivationTime.Action, 0)
             .SetGuiPresentation(Category.Class, PoisonSpray.GuiPresentation.SpriteReference)
             .SetRechargeRate(RechargeRate.AtWill)
@@ -947,13 +942,13 @@ internal static class Witch
 
         // Ruin
         var ruinAttributeModifier = FeatureDefinitionAttributeModifierBuilder
-            .Create("AttributeModifierRuin", WITCH_BASE_GUID)
+            .Create("AttributeModifierRuin", WitchBaseGuid)
             .SetGuiPresentation(Category.Modifier)
             .SetModifier(AttributeModifierOperation.Additive, AttributeDefinitions.ArmorClass, -3)
             .AddToDB();
 
         var ruinConditionDefinition = ConditionDefinitionBuilder
-            .Create(ConditionAcidArrowed, "ConditionRuin", WITCH_BASE_GUID)
+            .Create(ConditionAcidArrowed, "ConditionRuin", WitchBaseGuid)
             .SetGuiPresentation("Ruin", Category.Condition, ConditionAcidArrowed.GuiPresentation.SpriteReference)
             .SetConditionType(ConditionType.Detrimental)
             .SetDuration(DurationType.Round, 1)
@@ -963,15 +958,14 @@ internal static class Witch
             .SetFeatures(ruinAttributeModifier)
             .AddToDB();
 
-        var ruinConditionForm = new ConditionForm();
+        var ruinConditionForm = new ConditionForm {conditionDefinition = ruinConditionDefinition};
 
-        ruinConditionForm.conditionDefinition = ruinConditionDefinition;
-
-        var ruinEffectForm = new EffectForm();
-
-        ruinEffectForm.formType = EffectForm.EffectFormType.Condition;
-        ruinEffectForm.createdByCharacter = true;
-        ruinEffectForm.conditionForm = ruinConditionForm;
+        var ruinEffectForm = new EffectForm
+        {
+            formType = EffectForm.EffectFormType.Condition,
+            createdByCharacter = true,
+            conditionForm = ruinConditionForm
+        };
 
         var ruinEffectDescription = AcidArrow.EffectDescription
             .Copy()
@@ -985,7 +979,7 @@ internal static class Witch
             .SetEffectForms(ruinEffectForm);
 
         var ruin = FeatureDefinitionPowerBuilder
-            .Create("WitchMaledictionRuin", WITCH_BASE_GUID)
+            .Create("WitchMaledictionRuin", WitchBaseGuid)
             .SetActivation(ActivationTime.Action, 0)
             .SetGuiPresentation(Category.Class, AcidArrow.GuiPresentation.SpriteReference)
             .SetRechargeRate(RechargeRate.AtWill)
@@ -997,7 +991,7 @@ internal static class Witch
             new FeatureDefinition[] {abate, apathy, charm, disorient, evileye, obfuscate, pox, ruin};
 
         FeatureDefinitionFeatureSetMaledictions = FeatureDefinitionFeatureSetCustomBuilder
-            .Create("WitchMaledictionChoice", WITCH_BASE_GUID)
+            .Create("WitchMaledictionChoice", WitchBaseGuid)
             .SetGuiPresentation(Category.Feature)
             .SetRequireClassLevels(true)
             .SetLevelFeatures(1, maledictionsFeatures)
@@ -1018,7 +1012,7 @@ internal static class Witch
             .SetEffectForms(new CackleEffectForm());
 
         FeatureDefinitionPowerCackle = FeatureDefinitionPowerBuilder
-            .Create("WitchCacklePower", WITCH_BASE_GUID)
+            .Create("WitchCacklePower", WitchBaseGuid)
             .SetActivation(ActivationTime.BonusAction, 0)
             .SetGuiPresentation(Category.Class, HideousLaughter.GuiPresentation.SpriteReference)
             .SetRechargeRate(RechargeRate.AtWill)
@@ -1030,7 +1024,7 @@ internal static class Witch
     private static CharacterClassDefinition BuildAndAddClass()
     {
         var classBuilder = CharacterClassDefinitionBuilder
-            .Create("ClassWitch", WITCH_BASE_GUID)
+            .Create("ClassWitch", WitchBaseGuid)
             .SetGuiPresentation("Witch", Category.Class, Sorcerer.GuiPresentation.SpriteReference);
 
         BuildClassStats(classBuilder);
@@ -1054,10 +1048,15 @@ internal static class Witch
         {
 /*            var witchAttackDefinition = MonsterAttackDefinitionBuilder
                 .Create(MonsterAttackDefinitions.Attack_EagleMatriarch_Talons, "AttackWitchOwlTalons",
-                    WITCH_BASE_GUID).AddToDB();
-            var witchFamiliarAttackIteration = new MonsterAttackIteration(witchAttackDefinition, 1);
-            // We remove the inherent bonus as we will be using the Witch's spell attack bonus
-            witchFamiliarAttackIteration.MonsterAttackDefinition.toHitBonus = 0;
+                    WitchBaseGuid).AddToDB();
+            var witchFamiliarAttackIteration = new MonsterAttackIteration(witchAttackDefinition, 1)
+            {
+                MonsterAttackDefinition =
+                {
+                    // We remove the inherent bonus as we will be using the Witch's spell attack bonus
+                    toHitBonus = 0
+                }
+            };
 
             var damageForm = witchFamiliarAttackIteration.MonsterAttackDefinition.EffectDescription.EffectForms[0]
                 .DamageForm;
@@ -1067,7 +1066,7 @@ internal static class Witch
             damageForm.bonusDamage = 0;
 
             var witchFamiliarMonsterBuilder = MonsterDefinitionBuilder
-                .Create(Eagle_Matriarch, "WitchOwl", WITCH_BASE_GUID)
+                .Create(Eagle_Matriarch, "WitchOwl", WitchBaseGuid)
                 .SetGuiPresentation("WitchOwlFamiliar", Category.Monster,
                     Eagle_Matriarch.GuiPresentation.SpriteReference)
                 .SetFeatures(
@@ -1110,7 +1109,7 @@ internal static class Witch
             witchFamiliarMonster.CreatureTags.Add("WitchFamiliar");
 
             var spell = SpellDefinitionBuilder
-                .Create(Fireball, "WitchFamiliar", WITCH_BASE_GUID)
+                .Create(Fireball, "WitchFamiliar", WitchBaseGuid)
                 .SetGuiPresentation(Category.Spell, AnimalFriendship.GuiPresentation.SpriteReference)
                 .SetSchoolOfMagic(SchoolOfMagicDefinitions.SchoolConjuration)
                 .SetMaterialComponent(MaterialComponentType.None)
@@ -1129,20 +1128,18 @@ internal static class Witch
                 )
                 .AddToDB();
 
-            var summonForm = new SummonForm();
-            summonForm.monsterDefinitionName = witchFamiliarMonster.name;
-            summonForm.decisionPackage = null;
+            var summonForm = new SummonForm {monsterDefinitionName = witchFamiliarMonster.name, decisionPackage = null};
 
-            var effectForm = new EffectForm();
-            effectForm.formType = EffectForm.EffectFormType.Summon;
-            effectForm.createdByCharacter = true;
-            effectForm.summonForm = summonForm;
+            var effectForm = new EffectForm
+            {
+                formType = EffectForm.EffectFormType.Summon, createdByCharacter = true, summonForm = summonForm
+            };
 
             spell.EffectDescription.SetEffectForms(effectForm);
             GlobalUniqueEffects.AddToGroup(GlobalUniqueEffects.Group.Familiar, spell);
 
             var preparedSpells = FeatureDefinitionAutoPreparedSpellsBuilder
-                .Create("WitchFamiliarAutoPreparedSpell", WITCH_BASE_GUID)
+                .Create("WitchFamiliarAutoPreparedSpell", WitchBaseGuid)
                 .SetGuiPresentation("WitchFamiliarPower", Category.Class,
                     AnimalFriendship.GuiPresentation.SpriteReference)
                 .SetPreparedSpellGroups(BuildSpellGroup(2, spell))
@@ -1151,31 +1148,31 @@ internal static class Witch
                 .AddToDB();
 */
             var acConditionDefinition = ConditionDefinitionBuilder
-                .Create(ConditionKindredSpiritBondAC, "ConditionWitchFamiliarAC", WITCH_BASE_GUID)
+                .Create(ConditionKindredSpiritBondAC, "ConditionWitchFamiliarAC", WitchBaseGuid)
                 .SetGuiPresentationNoContent()
                 .SetAmountOrigin((ConditionDefinition.OriginOfAmount)ExtraOriginOfAmount.SourceProficiencyBonus)
                 .AddToDB();
 
             var stConditionDefinition = ConditionDefinitionBuilder
-                .Create(ConditionKindredSpiritBondSavingThrows, "ConditionWitchFamiliarST", WITCH_BASE_GUID)
+                .Create(ConditionKindredSpiritBondSavingThrows, "ConditionWitchFamiliarST", WitchBaseGuid)
                 .SetGuiPresentationNoContent()
                 .SetAmountOrigin((ConditionDefinition.OriginOfAmount)ExtraOriginOfAmount.SourceProficiencyBonus)
                 .AddToDB();
 
             var damageConditionDefinition = ConditionDefinitionBuilder
-                .Create(ConditionKindredSpiritBondMeleeDamage, "ConditionWitchFamiliarDamage", WITCH_BASE_GUID)
+                .Create(ConditionKindredSpiritBondMeleeDamage, "ConditionWitchFamiliarDamage", WitchBaseGuid)
                 .SetGuiPresentationNoContent()
                 .SetAmountOrigin((ConditionDefinition.OriginOfAmount)ExtraOriginOfAmount.SourceProficiencyBonus)
                 .AddToDB();
 
             var hitConditionDefinition = ConditionDefinitionBuilder
-                .Create(ConditionKindredSpiritBondMeleeAttack, "ConditionWitchFamiliarHit", WITCH_BASE_GUID)
+                .Create(ConditionKindredSpiritBondMeleeAttack, "ConditionWitchFamiliarHit", WitchBaseGuid)
                 .SetGuiPresentationNoContent()
                 .SetAmountOrigin((ConditionDefinition.OriginOfAmount)ExtraOriginOfAmount.SourceSpellAttack)
                 .AddToDB();
 
             var hpConditionDefinition = ConditionDefinitionBuilder
-                .Create(ConditionKindredSpiritBondHP, "ConditionWitchFamiliarHP", WITCH_BASE_GUID)
+                .Create(ConditionKindredSpiritBondHP, "ConditionWitchFamiliarHP", WitchBaseGuid)
                 .SetGuiPresentationNoContent()
                 .SetAmountOrigin((ConditionDefinition.OriginOfAmount)ExtraOriginOfAmount.SourceClassLevel)
                 .SetAllowMultipleInstances(true)
@@ -1186,7 +1183,7 @@ internal static class Witch
 
             var summoningAffinity = FeatureDefinitionSummoningAffinityBuilder
                 .Create(FeatureDefinitionSummoningAffinitys.SummoningAffinityKindredSpiritBond,
-                    "SummoningAffinityWitchFamiliar", WITCH_BASE_GUID)
+                    "SummoningAffinityWitchFamiliar", WitchBaseGuid)
                 .ClearEffectForms()
                 .SetRequiredMonsterTag("WitchFamiliar")
                 .SetAddedConditions(
@@ -1196,7 +1193,7 @@ internal static class Witch
 
             FeatureDefinitionFeatureSetWitchFamiliar = FeatureDefinitionFeatureSetBuilder
                 .Create(FeatureDefinitionFeatureSets.FeatureSetHumanLanguages, "FeatureSetWitchFamiliar",
-                    WITCH_BASE_GUID)
+                    WitchBaseGuid)
                 .SetGuiPresentation("WitchFamiliarPower", Category.Class)
                 .SetFeatureSet(WitchFamiliarFeatureSetBuilder.WitchFamiliarFeatureSet, summoningAffinity)
                 .SetMode(FeatureDefinitionFeatureSet.FeatureSetMode.Union)
@@ -1207,7 +1204,7 @@ internal static class Witch
         void BuildSubclasses()
         {
             var subclassChoices = FeatureDefinitionSubclassChoiceBuilder
-                .Create("SubclassChoiceWitchCovens", WITCH_BASE_GUID)
+                .Create("SubclassChoiceWitchCovens", WitchBaseGuid)
                 .SetGuiPresentation("WitchSubclassPath", Category.Subclass)
                 .SetSubclassSuffix("Coven")
                 .SetFilterByDeity(false)
@@ -1311,7 +1308,7 @@ internal static class Witch
             // TODO: Maledictions should now apply a debuff for disadvantage on saving throw like Force Of Law
             //            witch.AddFeatureAtLevel(InsidiousSpell,5);
 
-            // TODO: Simply buff the familiar accordingly, i.e. offer more forms, and if that is too hard, 
+            // TODO: Simply buff the familiar accordingly, i.e. offer more forms, and if that is too hard,
             // apply proficiency bonus on hit, or
             // extra attack to the familiar
             //            witch.AddFeatureAtLevel(ImprovedFamiliar,7);
@@ -1343,7 +1340,7 @@ internal static class Witch
             bool proxyOnly,
             bool forceSelfConditionOnly,
             EffectApplication effectApplication = EffectApplication.All,
-            List<EffectFormFilter> filters = null)
+            [CanBeNull] List<EffectFormFilter> filters = null)
         {
             var conditions = formsParams.targetCharacter.AllConditions;
 
@@ -1365,10 +1362,10 @@ internal static class Witch
         }
 
         private static void ApplyCondition(RulesetImplementationDefinitions.ApplyFormsParams formsParams,
-            ConditionDefinition condition, DurationType durationType, int durationParam)
+            [NotNull] ConditionDefinition condition, DurationType durationType, int durationParam)
         {
             // Prepare params for inflicting conditions
-            var sourceGuid = formsParams.sourceCharacter != null ? formsParams.sourceCharacter.Guid : 0L;
+            var sourceGuid = formsParams.sourceCharacter?.Guid ?? 0L;
             var sourceFaction = formsParams.sourceCharacter != null
                 ? formsParams.sourceCharacter.CurrentFaction.Name
                 : string.Empty;
@@ -1395,11 +1392,11 @@ internal static class Witch
 
     #region WitchMaledictionReplacer
 
-    private static FeatureDefinitionFeatureSetReplaceCustom witchMaledictionReplacer;
+    private static FeatureDefinitionFeatureSetReplaceCustom _witchMaledictionReplacer;
 
-    public static FeatureDefinitionFeatureSetReplaceCustom WitchMaledictionReplacer =>
-        witchMaledictionReplacer ??= FeatureDefinitionFeatureSetReplaceCustomBuilder
-            .Create("ClassWitchMaledictionReplace", WITCH_BASE_GUID)
+    private static FeatureDefinitionFeatureSetReplaceCustom WitchMaledictionReplacer =>
+        _witchMaledictionReplacer ??= FeatureDefinitionFeatureSetReplaceCustomBuilder
+            .Create("ClassWitchMaledictionReplace", WitchBaseGuid)
             .SetGuiPresentation(Category.Feature)
             .SetReplacedFeatureSet(FeatureDefinitionFeatureSetMaledictions)
             .AddToDB();

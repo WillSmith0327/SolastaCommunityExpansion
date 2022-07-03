@@ -39,7 +39,7 @@ internal static class ItemOptionsContext
 
     private static ItemPresentation EmpressGarbOriginalItemPresentation { get; set; }
 
-    internal static void LoadClothingGorimStock()
+    private static void LoadClothingGorimStock()
     {
         if (!Main.Settings.StockGorimStoreWithAllNonMagicalClothing)
         {
@@ -110,10 +110,7 @@ internal static class ItemOptionsContext
 
     internal static void SwitchEmpressGarb()
     {
-        if (EmpressGarbOriginalItemPresentation == null)
-        {
-            EmpressGarbOriginalItemPresentation = Enchanted_ChainShirt_Empress_war_garb.ItemPresentation;
-        }
+        EmpressGarbOriginalItemPresentation ??= Enchanted_ChainShirt_Empress_war_garb.ItemPresentation;
 
         switch (Main.Settings.EmpressGarbAppearance)
         {
@@ -204,11 +201,13 @@ internal static class ItemOptionsContext
                      .Where(x => x.WeaponDescription.WeaponType == EquipmentDefinitions.WeaponTypeQuarterstaff)
                      .Where(x => x.Magical && !x.Name.Contains("OfHealing")))
         {
-            if (Main.Settings.MakeAllMagicStaveArcaneFoci)
+            if (!Main.Settings.MakeAllMagicStaveArcaneFoci)
             {
-                item.IsFocusItem = true;
-                item.FocusItemDescription.focusType = EquipmentDefinitions.FocusType.Arcane;
+                continue;
             }
+
+            item.IsFocusItem = true;
+            item.FocusItemDescription.focusType = EquipmentDefinitions.FocusType.Arcane;
         }
     }
 
@@ -271,14 +270,16 @@ internal static class ItemOptionsContext
         GreenmageArmor.RequiredAttunementClasses.Clear();
         WizardClothes_Alternate.RequiredAttunementClasses.Clear();
 
-        if (!Main.Settings.AllowAnyClassToWearSylvanArmor)
+        if (Main.Settings.AllowAnyClassToWearSylvanArmor)
         {
-            GreenmageArmor.RequiredAttunementClasses.Add(Wizard);
-            WizardClothes_Alternate.RequiredAttunementClasses.Add(Wizard);
+            return;
         }
+
+        GreenmageArmor.RequiredAttunementClasses.Add(Wizard);
+        WizardClothes_Alternate.RequiredAttunementClasses.Add(Wizard);
     }
 
-    internal static void LoadRemoveIdentification()
+    private static void LoadRemoveIdentification()
     {
         if (Main.Settings.RemoveIdentifcationRequirements)
         {
@@ -288,7 +289,11 @@ internal static class ItemOptionsContext
             }
         }
 
-        if (Main.Settings.RemoveAttunementRequirements)
+        if (!Main.Settings.RemoveAttunementRequirements)
+        {
+            return;
+        }
+
         {
             foreach (var item in DatabaseRepository.GetDatabase<ItemDefinition>())
             {
@@ -297,27 +302,8 @@ internal static class ItemOptionsContext
         }
     }
 
-    // private static void FixGameRecipesTitles()
-    // {
-    //     var craftingRecipes = DatabaseRepository.GetDatabase<ItemDefinition>()
-    //         .GetAllElements()
-    //         .Where(x => x.IsDocument)
-    //         .Where(x =>
-    //             x.GuiPresentation.Title == "Equipment/&CraftingManualTitle"
-    //             || x.GuiPresentation.Title == "Equipment/&CraftingManual_x5_Title");
-    //
-    //     foreach (var craftingRecipe in craftingRecipes)
-    //     {
-    //         var itemTitle = craftingRecipe.DocumentDescription.RecipeDefinition.FormatTitle();
-    //
-    //         craftingRecipe.GuiPresentation.title =
-    //             Gui.Format(craftingRecipe.GuiPresentation.Title, itemTitle);
-    //     }
-    // }
-
     internal static void Load()
     {
-        //FixGameRecipesTitles();
         LoadRemoveIdentification();
         LoadClothingGorimStock();
         SwitchSetBeltOfDwarvenKindBeardChances();
@@ -352,18 +338,19 @@ internal static class ItemOptionsContext
             Definition.GuiPresentation.Description = description;
             Definition.UsableDeviceDescription.DeviceFunctions[0].spellDefinition = Identify;
 
-            var stockFocus = new StockUnitDescription();
-
-            stockFocus.itemDefinition = Definition;
-            stockFocus.initialAmount = 1;
-            stockFocus.initialized = true;
-            stockFocus.factionStatus = "Indifference";
-            stockFocus.maxAmount = 2;
-            stockFocus.minAmount = 1;
-            stockFocus.stackCount = 1;
-            stockFocus.reassortAmount = 1;
-            stockFocus.reassortRateValue = 1;
-            stockFocus.reassortRateType = RuleDefinitions.DurationType.Day;
+            var stockFocus = new StockUnitDescription
+            {
+                itemDefinition = Definition,
+                initialAmount = 1,
+                initialized = true,
+                factionStatus = "Indifference",
+                maxAmount = 2,
+                minAmount = 1,
+                stackCount = 1,
+                reassortAmount = 1,
+                reassortRateValue = 1,
+                reassortRateType = RuleDefinitions.DurationType.Day
+            };
 
             StockFocus.Add(stockFocus);
         }

@@ -142,6 +142,7 @@ ModUi/&Races=<color=yellow>Расы</color>
 ModUi/&RacesClassesSubclasses=Расы, классы и подклассы
 ModUi/&RecipeCost=<color=white>Стоимость рецепта</color>
 ModUi/&RecipesInDm=Рецепты в Создателе Подземелий
+ModUi/&ReduceDarkelfLightPenalty=Уменьшите Штраф Света Темных Эльфов до -1d4 к атакам вместо Неудобства
 ModUi/&RelicForgeries=Поддельные реликвии
 ModUi/&RemoveAttunementRequirements=Убрать требования к настройке на магические предметы <b><i><color=#C04040E0>[Требуется перезагрузка]</color></i></b>
 ModUi/&RemoveBugVisualModels=Заменять в игре похожие на жуков модели альтернативными <b><i><color=#C04040E0>[Требуется перезагрузка]</color></i></b>
@@ -177,8 +178,8 @@ ModUi/&Translate=Перевести
 ModUi/&TranslateCancel=Отменить {0} в {1}
 ModUi/&TranslationEngine=Движок перевода
 ModUi/&Translations=Переводы
-ModUi/&UnleashEnemyAsNpc=Разрешить выбор монстров на гаджетах НИП <i><color=yellow>[зажмите <color=#1E81B0>CTRL</color> при нажатии на кнопку «Выбрать» на панели гаджетов]</color></i>
-ModUi/&UnleashNpcAsEnemy=Разрешить выбор НИП на гаджетах монстров <i><color=yellow>[зажмите <color=#1E81B0>CTRL</color> при нажатии на кнопку «Выбрать» на панели гаджетов]</color></i>
+ModUi/&UnleashEnemyAsNpc=Разрешить выбор монстров на гаджетах НИП
+ModUi/&UnleashNpcAsEnemy=Разрешить выбор НИП на гаджетах монстров
 ModUi/&UnlockAllNpcFaces=Разблокировать все лица НИП
 ModUi/&UnlockEyeStyles=Разблокировать стили глаз
 ModUi/&UnlockGlowingColorsForAllMarksAndTatoos=Разблокировать светящиеся цвета для всех отметин и татуировок
@@ -193,3 +194,4 @@ ModUi/&Category=Category
 ModUi/&WeaponTag=Weapon Tag
 ModUi/&ItemTag=Item Tag
 ModUi/&EnableAdditionalBackstoryDisplay=Включить дополнительное отображение предыстории при фоновой проверке
+ModUi/&EnableStatsOnHeroTooltip=Отображать статистику во всплывающей подсказке героя <i><color=yellow>[т.е.: критические попадания, критические неудачи и т. д.]</color></i>

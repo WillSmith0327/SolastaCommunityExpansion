@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -21,11 +20,13 @@ internal class UserCampaignsTranslatorContext : MonoBehaviour
     {
         get
         {
-            if (_exporter == null)
+            if (_exporter != null)
             {
-                _exporter = new GameObject().AddComponent<UserCampaignsTranslatorContext>();
-                DontDestroyOnLoad(_exporter.gameObject);
+                return _exporter;
             }
+
+            _exporter = new GameObject().AddComponent<UserCampaignsTranslatorContext>();
+            DontDestroyOnLoad(_exporter.gameObject);
 
             return _exporter;
         }
@@ -63,10 +64,6 @@ internal class UserCampaignsTranslatorContext : MonoBehaviour
     private static IEnumerator TranslateUserCampaignRoutine(string languageCode, string exportName,
         UserCampaign userCampaign)
     {
-        var start = DateTime.UtcNow;
-
-        Main.Log($"Export started: {DateTime.UtcNow:G}");
-
         yield return null;
 
         var current = 0;
@@ -75,8 +72,11 @@ internal class UserCampaignsTranslatorContext : MonoBehaviour
                 .SelectMany(x => x.AllDialogStates)
                 .SelectMany(x => x.DialogLines)
                 .Count() +
-            userCampaign.UserItems
-                .Count() +
+            userCampaign.UserItems.Count +
+            userCampaign.UserMonsters.Count +
+            userCampaign.UserNpcs.Count +
+            userCampaign.UserMerchantInventories.Count +
+            userCampaign.UserLootPacks.Count +
             userCampaign.UserLocations
                 .SelectMany(x => x.GadgetsByName)
                 .Count() +
@@ -104,9 +104,7 @@ internal class UserCampaignsTranslatorContext : MonoBehaviour
 
             foreach (var userDialogState in dialog.AllDialogStates
                          .Where(x =>
-                             x.Type == "AnswerChoice"
-                             || x.Type == "CharacterSpeech"
-                             || x.Type == "NpcSpeech"))
+                             x.Type is "AnswerChoice" or "CharacterSpeech" or "NpcSpeech"))
             {
                 foreach (var dialogLine in userDialogState.DialogLines)
                 {
@@ -130,19 +128,16 @@ internal class UserCampaignsTranslatorContext : MonoBehaviour
                 continue;
             }
 
-            var newdocumentFragment = new List<string>();
+            var newDocumentFragment = item.DocumentFragments
+                .Select(documentFragment => Translations.Translate(documentFragment, languageCode)).ToList();
 
-            foreach (var documentFragment in item.DocumentFragments)
-            {
-                newdocumentFragment.Add(Translations.Translate(documentFragment, languageCode));
-            }
-
-            item.DocumentFragments = newdocumentFragment;
+            item.DocumentFragments = newDocumentFragment;
         }
 
         // USER LOCATIONS
         foreach (var userLocation in userCampaign.UserLocations)
         {
+            userLocation.Title = Translations.Translate(userLocation.Title, languageCode);
             userLocation.Description = Translations.Translate(userLocation.Description, languageCode);
 
             foreach (var gadget in userLocation.GadgetsByName.Values)
@@ -151,25 +146,24 @@ internal class UserCampaignsTranslatorContext : MonoBehaviour
 
                 foreach (var parameterValue in gadget.ParameterValues)
                 {
-                    if (parameterValue.GadgetParameterDescription.Type == GadgetBlueprintDefinitions.Type.Npc
-                        || parameterValue.GadgetParameterDescription.Type == GadgetBlueprintDefinitions.Type.Speech
-                        || parameterValue.GadgetParameterDescription.Type == GadgetBlueprintDefinitions.Type.SpeechList
-                        || parameterValue.GadgetParameterDescription.Type == GadgetBlueprintDefinitions.Type.LoreFormat)
+                    if (parameterValue.GadgetParameterDescription.Type != GadgetBlueprintDefinitions.Type.Npc &&
+                        parameterValue.GadgetParameterDescription.Type != GadgetBlueprintDefinitions.Type.Quest &&
+                        parameterValue.GadgetParameterDescription.Type != GadgetBlueprintDefinitions.Type.Speech &&
+                        parameterValue.GadgetParameterDescription.Type != GadgetBlueprintDefinitions.Type.SpeechList &&
+                        parameterValue.GadgetParameterDescription.Type != GadgetBlueprintDefinitions.Type.LoreFormat)
                     {
-                        var newStringsList = new List<string>();
+                        continue;
+                    }
 
-                        foreach (var stringValue in parameterValue.StringsList)
-                        {
-                            newStringsList.Add(Translations.Translate(stringValue, languageCode));
-                        }
+                    var newStringsList = parameterValue.StringsList
+                        .Select(stringValue => Translations.Translate(stringValue, languageCode)).ToList();
 
-                        parameterValue.StringsList = newStringsList;
+                    parameterValue.StringsList = newStringsList;
 
-                        if (parameterValue.StringValue != string.Empty)
-                        {
-                            parameterValue.StringValue =
-                                Translations.Translate(parameterValue.StringValue, languageCode);
-                        }
+                    if (parameterValue.StringValue != string.Empty)
+                    {
+                        parameterValue.StringValue =
+                            Translations.Translate(parameterValue.StringValue, languageCode);
                     }
                 }
             }
@@ -178,12 +172,10 @@ internal class UserCampaignsTranslatorContext : MonoBehaviour
         // USER QUESTS
         foreach (var quest in userCampaign.UserQuests)
         {
-            quest.Title = Translations.Translate(quest.Description, languageCode);
             quest.Description = Translations.Translate(quest.Description, languageCode);
 
             foreach (var userQuestStep in quest.AllQuestStepDescriptions)
             {
-                userQuestStep.Title = Translations.Translate(userQuestStep.Title, languageCode);
                 userQuestStep.Description = Translations.Translate(userQuestStep.Description, languageCode);
 
                 foreach (var outcome in userQuestStep.OutcomesTable)
@@ -195,16 +187,50 @@ internal class UserCampaignsTranslatorContext : MonoBehaviour
             }
         }
 
+        // USER MONSTERS
+        foreach (var monster in userCampaign.UserMonsters)
+        {
+            yield return Update();
+
+            monster.Title = Translations.Translate(monster.Title, languageCode);
+            monster.Description = Translations.Translate(monster.Description, languageCode);
+        }
+
+        // USER NPCs
+        foreach (var npc in userCampaign.UserNpcs)
+        {
+            yield return Update();
+
+            npc.Title = Translations.Translate(npc.Title, languageCode);
+            npc.Description = Translations.Translate(npc.Description, languageCode);
+        }
+
+        // USER MERCHANT INVENTORIES
+        foreach (var merchantInventory in userCampaign.UserMerchantInventories)
+        {
+            yield return Update();
+
+            merchantInventory.Title = Translations.Translate(merchantInventory.Title, languageCode);
+            merchantInventory.Description = Translations.Translate(merchantInventory.Description, languageCode);
+        }
+
+        // USER LOOT PACKS
+        foreach (var lootPack in userCampaign.UserLootPacks)
+        {
+            yield return Update();
+
+            lootPack.Title = Translations.Translate(lootPack.Title, languageCode);
+            lootPack.Description = Translations.Translate(lootPack.Description, languageCode);
+        }
+
         CurrentExports.Remove(exportName);
 
         var userCampaignPoolService = ServiceRepository.GetService<IUserCampaignPoolService>();
 
         userCampaignPoolService.SaveUserCampaign(userCampaign);
-
-        Main.Log($"Export finished: {DateTime.UtcNow}, {DateTime.UtcNow - start}.");
     }
 
-    internal class ExportStatus
+    internal sealed class ExportStatus
     {
         internal Coroutine Coroutine;
         internal string LanguageCode;

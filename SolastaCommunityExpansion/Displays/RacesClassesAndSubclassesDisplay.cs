@@ -50,7 +50,7 @@ internal static class RacesClassesAndSubclassesDisplay
         if (UI.Slider("", ref intValue, 0, 5, 3, "", UI.AutoWidth()))
         {
             Main.Settings.OverrideRogueConArtistImprovedManipulationSpellDc = intValue;
-            ConArtist.UpdateSpellDCBoost();
+            ConArtist.UpdateSpellDcBoost();
         }
 
         UI.Label("");
@@ -59,7 +59,14 @@ internal static class RacesClassesAndSubclassesDisplay
         if (UI.Slider("", ref intValue, 0, 5, 2, "", UI.AutoWidth()))
         {
             Main.Settings.OverrideWizardMasterManipulatorArcaneManipulationSpellDc = intValue;
-            MasterManipulator.UpdateSpellDCBoost();
+            MasterManipulator.UpdateSpellDcBoost();
+        }
+
+        UI.Label("");
+        toggle = Main.Settings.ReduceDarkelfLightPenalty;
+        if (UI.Toggle(Gui.Localize("ModUi/&ReduceDarkelfLightPenalty"), ref toggle, UI.AutoWidth()))
+        {
+            Main.Settings.ReduceDarkelfLightPenalty = toggle;
         }
     }
 
